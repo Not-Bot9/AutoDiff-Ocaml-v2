@@ -1,0 +1,50 @@
+digraph simple_operations {
+  rankdir=LR;  // Left to right layout
+
+  /* f1_custom function nodes */
+  subgraph cluster_f1 {
+    label="f1_custom(a,b) = (a * (a/b)) + (a + b)";
+    style=rounded;
+    node [shape=ellipse];
+
+    a1 [label="data: 230.3\nvar: a"];
+    b1 [label="data: 33.2\nvar: b"];
+    
+    div [label="data: 6.937\nop: div"];
+    mul1 [label="data: 1597.533\nop: mul"];
+    add1 [label="data: 263.5\nop: add"];
+    result1 [label="data: 1861.033\nop: add\ngrad_a: 14.873\ngrad_b: -47.118"];
+
+    /* f1 edges */
+    a1 -> div;
+    b1 -> div;
+    a1 -> mul1;
+    div -> mul1;
+    a1 -> add1;
+    b1 -> add1;
+    mul1 -> result1;
+    add1 -> result1;
+  }
+
+  /* f2_custom function nodes */
+  subgraph cluster_f2 {
+    label="f2_custom(x) = x * sin(x * cos(x))";
+    style=rounded;
+    node [shape=ellipse];
+
+    x1 [label="data: 2.0\nvar: x"];
+    
+    cos [label="data: -0.416\nop: cos"];
+    mul2 [label="data: -0.832\nop: mul"];
+    sin [label="data: -0.732\nop: sin"];
+    result2 [label="data: -1.464\nop: mul\ngrad_x: -3.748"];
+
+    /* f2 edges */
+    x1 -> cos;
+    x1 -> mul2;
+    cos -> mul2;
+    mul2 -> sin;
+    x1 -> result2;
+    sin -> result2;
+  }
+}

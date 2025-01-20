@@ -1,0 +1,5 @@
+(executable
+ (public_name server)
+ (package autodiff)
+ (modules server)
+ (libraries dream lwt unix))

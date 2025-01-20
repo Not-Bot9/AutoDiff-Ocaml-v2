@@ -1,0 +1,63 @@
+digraph neural_network {
+  rankdir=LR;
+  compound=true;
+  splines=ortho;
+  newrank=true;
+
+  /* Graph styling */
+  graph [fontname="Arial", pad="0.5"];
+  node [fontname="Arial", shape=record, style="rounded,filled", fillcolor=lightblue];
+  edge [fontname="Arial"];
+
+  subgraph cluster_process {
+    label="Neural Network Training Process";
+    style=filled;
+    color=lightyellow;
+
+    /* Data Flow */
+    input [label="Input Data|{100 samples|3 features}"];
+    hidden [label="Hidden Layer|{8 neurons|Leaky ReLU}"];
+    output [label="Output Layer|{1 neuron|Sigmoid}"];
+    prediction [label="Predictions|{Binary Classes|Threshold: 0.5}"];
+    
+    /* Loss and Optimization */
+    loss [label="Loss Function|{Binary Cross-Entropy|Epoch 1: 65.20\lEpoch 50: 48.87\l}", fillcolor=lightpink];
+    accuracy [label="Accuracy Metrics|{Initial: 86%|Final: 99%}", fillcolor=lightgreen];
+    
+    /* Parameter Updates */
+    params [label="Training Parameters|{Learning Rate: 0.01\lGradient Clipping: [-2, 2]\lEpochs: 100\l}", fillcolor=lightgrey];
+    
+    /* Example Output */
+    examples [label="Sample Results|{True: 0.1 → Pred: 0.28\lTrue: 0.9 → Pred: 0.88\l}", fillcolor=lightcyan];
+
+    /* Connect components */
+    input -> hidden [label="Weight Matrix\n(3x8)"];
+    hidden -> output [label="Weight Matrix\n(8x1)"];
+    output -> prediction;
+    prediction -> loss;
+    loss -> accuracy [label="evaluate"];
+    
+    /* Add gradient flow */
+    edge [color=red, style=dashed];
+    loss -> hidden [label="backprop"];
+    loss -> output [label="backprop"];
+  }
+
+  /* Training Progress */
+  subgraph cluster_progress {
+    label="Training Progress";
+    style=filled;
+    color=lightgrey;
+    
+    node [shape=none];
+    progress [label=<
+      <table border="0" cellborder="1" cellspacing="0">
+        <tr><td colspan="3"><b>Training Metrics</b></td></tr>
+        <tr><td>Epoch</td><td>Loss</td><td>Accuracy</td></tr>
+        <tr><td>1</td><td>65.20</td><td>86%</td></tr>
+        <tr><td>30</td><td>48.93</td><td>99%</td></tr>
+        <tr><td>100</td><td>48.85</td><td>99%</td></tr>
+      </table>
+    >];
+  }
+}

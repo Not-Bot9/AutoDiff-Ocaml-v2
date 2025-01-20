@@ -1,0 +1,46 @@
+digraph computational_graph {
+  rankdir=TB;
+  node [shape=box, style=rounded];
+  
+  /* Input variables */
+  input_group [shape=none, label="Input Variables", style=""];
+  a [label="data: 230.300003\nop: self"];
+  b [label="data: 33.200001\nop: self"];
+  
+  /* Elementary operations */
+  div [label="data: 6.936747\nop: div"];
+  mul [label="data: 1597.532837\nop: mul"];
+  add [label="data: 263.500000\nop: add"];
+  
+  /* Gradient information */
+  grad_info [shape=record, 
+            label="Gradient Information|{df/da = 14.873494|df/db = -47.118458}",
+            style=filled,
+            fillcolor=lightgray];
+            
+  /* Explanatory notes */
+  note [shape=note, 
+        label="Elementary Function Decomposition\nf(a,b) = (a * (a/b)) + (a + b)",
+        fontsize=10];
+  
+  /* Edges */
+  edge [color=black, arrowhead=normal];
+  {rank=same; a b}
+  {rank=same; div mul}
+  
+  /* Data flow */
+  a -> div;
+  b -> div;
+  div -> mul [label="intermediate"];
+  a -> mul;
+  a -> add;
+  b -> add;
+  
+  /* Grouping */
+  subgraph cluster_0 {
+    label="Computational Graph";
+    style=rounded;
+    color=gray;
+    div; mul; add;
+  }
+}

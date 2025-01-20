@@ -1,0 +1,49 @@
+digraph basic_operations {
+  /* Addition operation nodes */
+  add_input1 [label="data:\n  3.00 3.00\n  3.00 3.00"];
+  add_input2 [label="data:\n  4.00 4.00\n  4.00 4.00"];
+  add_result [label="data:\n  7.00 7.00\n  7.00 7.00\nop: add"];
+  
+  add_input1 -> add_result;
+  add_input2 -> add_result;
+
+  /* Multiplication operation nodes */
+  mul_input1 [label="data:\n  3.00 3.00\n  3.00 3.00"];
+  mul_input2 [label="data:\n  4.00 4.00\n  4.00 4.00"];
+  mul_result [label="data:\n  12.00 12.00\n  12.00 12.00\nop: mul"];
+  
+  mul_input1 -> mul_result;
+  mul_input2 -> mul_result;
+
+  /* Transpose operation nodes */
+  trans_input [label="data:\n  3.00 3.00\n  3.00 3.00"];
+  trans_result [label="data:\n  3.00 3.00\n  3.00 3.00\nop: transpose"];
+  
+  trans_input -> trans_result;
+
+  /* Dot product operation nodes */
+  dot_input1 [label="data:\n  2.00 2.00 2.00"];
+  dot_input2 [label="data:\n  3.00 3.00 3.00"];
+  dot_result [label="data: 18.00\nop: dot"];
+  
+  dot_input1 -> dot_result;
+  dot_input2 -> dot_result;
+
+  /* Matrix multiplication operation nodes */
+  matmul_input1 [label="data:\n  2.00 2.00\n  2.00 2.00\n  2.00 2.00"];
+  matmul_input2 [label="data:\n  3.00 3.00 3.00\n  3.00 3.00 3.00"];
+  matmul_result [label="data:\n  12.00 12.00 12.00\n  12.00 12.00 12.00\n  12.00 12.00 12.00\nop: matmul"];
+  
+  matmul_input1 -> matmul_result;
+  matmul_input2 -> matmul_result;
+
+  /* Add rank subgraphs to arrange nodes */
+  {rank=same; add_input1; add_input2; mul_input1; mul_input2; trans_input; dot_input1; dot_input2; matmul_input1; matmul_input2}
+  {rank=same; add_result; mul_result; trans_result; dot_result; matmul_result}
+
+  /* Add invisible edges to improve layout */
+  edge[style=invis];
+  add_result -> mul_result -> trans_result -> dot_result -> matmul_result;
+  add_input1 -> mul_input1 -> trans_input -> dot_input1 -> matmul_input1;
+  add_input2 -> mul_input2 -> dot_input2 -> matmul_input2;
+}

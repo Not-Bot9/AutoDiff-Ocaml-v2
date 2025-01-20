@@ -1,0 +1,4 @@
+(executable
+ (public_name demo)
+ (name demo)
+ (libraries ocamlgraph graphics))

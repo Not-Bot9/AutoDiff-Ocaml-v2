@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OCaml Autodiff Examples</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+      async function displayGraph(example, graphType) {
+        try {
+          const graphResponse = await fetch(`/graph/${graphType}?t=${Date.now()}`);
+          const graphPath = await graphResponse.text();
+          if (!graphPath.startsWith('Failed')) {
+            const graphId = `${example}-graph`;
+            const graphImg = document.getElementById(graphId);
+            if (graphImg) {
+              graphImg.src = graphPath;
+              graphImg.style.display = 'block';
+            } else {
+              console.error(`Graph element ${graphId} not found`);
+            }
+          } else {
+            console.error(`Failed to get graph path: ${graphPath}`);
+          }
+        } catch (error) {
+          console.error('Error loading graph:', error);
+        }
+      }
+
+      async function runExample(example) {
+  // Show loading
+  const output = document.getElementById('output');
+  if (example === 'large') {
+    output.innerText = 'Loading... (Takes approximately 50 seconds)';
+  } else {
+    output.innerText = 'Loading...';
+  }
+  
+  const graphs = document.querySelectorAll('.graph-image');
+  graphs.forEach(img => img.style.display = 'none');
+  
+  try {
+    // Add loading animation class for the large example
+    if (example === 'large') {
+      output.classList.add('loading-animation');
+    }
+    
+    // Fetch and display example output 
+    const response = await fetch(`/run/${example}`);
+    const text = await response.text();
+    output.innerText = text;
+    
+    output.classList.remove('loading-animation');
+    
+  
+    switch(example) {
+      case 'basic':
+        await displayGraph('basic', 'basic');
+        break;
+      case 'simple':
+        await displayGraph('simple', 'simple');
+        break;
+      case 'large':
+        await displayGraph('large', 'large');
+        break;
+      case 'printed':
+        await displayGraph('printed', 'computational_graph');
+        break;
+      case 'nn':
+        await displayGraph('nn', 'nn');
+        break;
+      
+    }
+  } catch (error) {
+    output.classList.remove('loading-animation');
+    output.innerText = 'An error occurred while running the example.';
+    console.error('Error:', error);
+  }
+}
+</script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Auto Differentiation Examples</h1>
+      <div class="button-group">
+        <button onclick="runExample('basic')">Run Basic</button>
+        <button onclick="runExample('simple')">Run Simple</button>
+        <button onclick="runExample('large')">Run Large</button>
+        <button onclick="runExample('printed')">Computational Graph</button>
+        <button onclick="runExample('nn')">Neural Network</button>
+      </div>
+      <div class="output-container">
+        <pre id="output"></pre>
+        <img id="basic-graph" class="graph-image" style="display: none;" alt="Basic Operations Graph">
+        <img id="simple-graph" class="graph-image" style="display: none;" alt="Simple Operations Graph">
+        <img id="large-graph" class="graph-image" style="display: none;" alt="Large Matrix Operations Graph">
+        <img id="printed-graph" class="graph-image" style="display: none;" alt="Auto Differentiation Internals Graph">
+        <img id="nn-graph" class="graph-image" style="display: none;" alt="Neural Network Architecture">
+      </div>
+    </div>
+    <footer class="footer">
+      <p>FPSE FA24 Final Project Made by Ayush, Shaurya, Vineela, Maximus</p>
+      <p>Code available at <a href="https://github.com/Not-Bot9/AutoDiff-Ocaml/tree/main">Github</a></p>
+    </footer>
+  </body>
+</html>

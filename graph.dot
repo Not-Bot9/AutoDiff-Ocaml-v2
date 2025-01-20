@@ -1,0 +1,14 @@
+digraph computation_graph {
+  node11 [label="id: 11\ndata: 90.00"];
+  node11 -> node8;
+  node8 [label="id: 8\ndata: 10.00"];
+  node8 -> node5;
+  node5 [label="id: 5\ndata: 5.00"];
+  node5 -> node0;
+  node0 [label="id: 0\ndata: 2.00"];
+  node5 -> node1;
+  node1 [label="id: 1\ndata: 3.00"];
+  node8 -> node0;
+  node11 -> node2;
+  node2 [label="id: 2\ndata: 9.00"];
+}

@@ -1,0 +1,63 @@
+digraph large_computation {
+  rankdir=TB;
+  node [shape=box, style="rounded"];
+  
+  /* Representative input matrices */
+  subgraph cluster_inputs {
+    label="Input Matrices (1000 x 1000)"
+    color=lightgrey;
+    style=rounded;
+    
+    /* First matrix (a) */
+    a1 [label="First matrix a[0,0]\nValue: 0.731\nseed: 1"];
+    aLast [label="Last matrix a[999,999]\nValue: 0.892\nseed: 1"];
+    
+    /* First matrix (b) */
+    b1 [label="First matrix b[0,0]\nValue: 0.412\nseed: 2"];
+    bLast [label="Last matrix b[999,999]\nValue: 0.634\nseed: 2"];
+    
+    /* Invisible edges to align matrices */
+    edge [style=invis];
+    a1 -> aLast;
+    b1 -> bLast;
+  }
+  
+  /* Intermediate computations */
+  subgraph cluster_operations {
+    label="Matrix Operations"
+    color=lightgrey;
+    style=rounded;
+    
+    /* Element-wise operations */
+    div [label="Division (a/b)\n1000 x 1000"];
+    mul [label="Multiplication\na * (a/b)\n1000 x 1000"];
+    trans [label="Transpose\n1000 x 1000"];
+    
+    add1 [label="Addition 1\n(a + b)\n1000 x 1000"];
+    add2 [label="Addition 2\nCombining terms\n1000 x 1000"];
+    
+    /* Result of element-wise operations */
+    matmul [label="Matrix Multiplication\nFinal matmul\n1000 x 1000"];
+  }
+  
+  /* Final result */
+  result [label="Final Result\nGradient wrt a: 1224.88\nGradient wrt b: -7210.27\nExecution time: 1.45s",
+         shape=doubleoctagon];
+  
+  /* Connections */
+  a1 -> div [ltail=cluster_inputs];
+  b1 -> div [ltail=cluster_inputs];
+  
+  /* Main computation flow */
+  div -> mul;
+  mul -> trans;
+  trans -> add1;
+  add1 -> add2;
+  add2 -> matmul;
+  a1 -> matmul [ltail=cluster_inputs];
+  matmul -> result;
+  
+  /* Add note about matrix sizes */
+  note [label="Note: All intermediate operations\npreserve 1000x1000 dimensions", 
+        shape=note, fontsize=10];
+}
