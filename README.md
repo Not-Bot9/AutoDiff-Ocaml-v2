@@ -1,7 +1,7 @@
 # Automatic Differentiation Library with Web Interface in OCaml
 
 ## Note
-The project now includes a comprehensive web interface for visualizing and understanding automatic differentiation concepts. Each example includes both computational output and visual representation of the operations being performed. The examples progress from basic operations to neural networks, demonstrating the applications of Automatic Differentiation.
+The project now includes a comprehensive web interface for visualizing and better understanding of automatic differentiation. Each example includes both computational output and visual representation of the operations being performed. The examples range from basic operations to neural networks, demonstrating the applications of Automatic Differentiation.
 
 ## Recent Updates
 
